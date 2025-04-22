@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>YouTube MP4 Downloader</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        img.logo {
+            height: 80px;
+            margin-bottom: 20px;
+        }
+
+        .form-wrapper {
+            width: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            resize: none;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .msg {
+            margin-bottom: 16px;
+            padding: 10px;
+            border-radius: 6px;
+            width: 600px;
+        }
+
+        .success { background-color: #d1e7dd; color: #0f5132; }
+        .danger  { background-color: #f8d7da; color: #842029; }
+        .warning { background-color: #fff3cd; color: #664d03; }
+
+        /* Light theme */
+        @media (prefers-color-scheme: light) {
+            body {
+                background-color: #f5f7fa;
+                color: #222;
+            }
+
+            textarea {
+                background-color: white;
+                color: black;
+            }
+        }
+
+        /* Dark theme */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1e1e1e;
+                color: #eee;
+            }
+
+            textarea {
+                background-color: #2b2b2b;
+                color: #eee;
+                border: 1px solid #444;
+            }
+
+            button {
+                background-color: #0d6efd;
+            }
+
+            button:hover {
+                background-color: #084298;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>YouTube MP4 Downloader</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="msg {{ category }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="post" class="form-wrapper">
+        <textarea name="links" placeholder="Paste YouTube links here, one per line..."></textarea>
+        <div class="button-container">
+            <button type="submit">Download</button>
+        </div>
+    </form>
+</body>
+</html>
