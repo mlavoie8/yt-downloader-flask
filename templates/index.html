@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,20 +9,23 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #1e1e1e;
+            color: #eee;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 40px;
-            transition: background-color 0.3s, color 0.3s;
         }
 
         h2 {
-            margin-bottom: 20px;
+            margin-bottom: 4px;
         }
 
-        img.logo {
-            height: 80px;
-            margin-bottom: 20px;
+        .subtitle {
+            margin-bottom: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #aaa;
         }
 
         .form-wrapper {
@@ -36,19 +40,22 @@
             padding: 12px;
             font-size: 16px;
             border-radius: 8px;
-            border: 1px solid #ccc;
+            border: 1px solid #444;
             resize: none;
             margin-bottom: 16px;
+            background-color: #2b2b2b;
+            color: #eee;
             box-sizing: border-box;
         }
 
-        .button-container {
+        .bottom-controls {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            align-items: center;
         }
 
         button {
-            background-color: #007BFF;
+            background-color: #0d6efd;
             color: white;
             font-weight: bold;
             padding: 10px 20px;
@@ -58,72 +65,79 @@
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #084298;
         }
 
-        .msg {
-            margin-bottom: 16px;
-            padding: 10px;
-            border-radius: 6px;
-            width: 600px;
+        .toggle {
+            display: flex;
+            background-color: #007BFF;
+            border-radius: 40px;
+            overflow: hidden;
+            width: 140px;
+            height: 40px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
-        .success { background-color: #d1e7dd; color: #0f5132; }
-        .danger  { background-color: #f8d7da; color: #842029; }
-        .warning { background-color: #fff3cd; color: #664d03; }
+        .toggle input { display: none; }
 
-        /* Light theme */
-        @media (prefers-color-scheme: light) {
-            body {
-                background-color: #f5f7fa;
-                color: #222;
-            }
-
-            textarea {
-                background-color: white;
-                color: black;
-            }
+        .toggle label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s, color 0.3s;
+            color: white;
         }
 
-        /* Dark theme */
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #1e1e1e;
-                color: #eee;
-            }
+        .toggle input:checked + label {
+            background-color: white;
+            color: #007BFF;
+        }
 
-            textarea {
-                background-color: #2b2b2b;
-                color: #eee;
-                border: 1px solid #444;
-            }
+        .toggle label:first-of-type {
+            border-top-left-radius: 40px;
+            border-bottom-left-radius: 40px;
+        }
 
-            button {
-                background-color: #0d6efd;
-            }
-
-            button:hover {
-                background-color: #084298;
-            }
+        .toggle label:last-of-type {
+            border-top-right-radius: 40px;
+            border-bottom-right-radius: 40px;
         }
     </style>
 </head>
 <body>
     <h2>YouTube MP4 Downloader</h2>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, msg in messages %}
-          <div class="msg {{ category }}">{{ msg }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+    <div class="subtitle">Made in Québec</div>
 
     <form method="post" class="form-wrapper">
         <textarea name="links" placeholder="Paste YouTube links here, one per line..."></textarea>
-        <div class="button-container">
+
+        <div class="bottom-controls">
+            <div class="toggle">
+                <input type="radio" name="format" value="mp4" id="format-mp4" checked>
+                <label for="format-mp4">MP4</label>
+                <input type="radio" name="format" value="mp3" id="format-mp3">
+                <label for="format-mp3">MP3</label>
+            </div>
             <button type="submit">Download</button>
         </div>
     </form>
+
+    <script>
+        {% if filenames %}
+        window.onload = function () {
+            const files = {{ filenames|tojson }};
+            for (const file of files) {
+                const link = document.createElement("a");
+                link.href = "/download/" + file;
+                link.download = file;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        };
+        {% endif %}
+    </script>
 </body>
 </html>
