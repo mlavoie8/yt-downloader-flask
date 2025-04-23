@@ -76,11 +76,11 @@ def download_file(filename):
     def safe_delete(path):
         try:
             os.remove(path)
-            print(f"✅ Deleted: {path}")
+            print(f"Deleted: {path}")
         except FileNotFoundError:
-            print(f"⚠️ File already deleted or not found: {path}")
+            print(f"File already deleted or not found: {path}")
         except Exception as e:
-            print(f"❌ Could not delete file: {e}")
+            print(f"Could not delete file: {e}")
 
     @after_this_request
     def delete_file(response):
